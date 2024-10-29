@@ -2,24 +2,46 @@ FROM node:18 AS build
 
 RUN npm i -g yarn
 
-WORKDIR /usr/src/app
+FROM node:18-alpine AS base
 
-COPY package.json yarn.lock  ./
-COPY .yarn ./.yarn
+RUN npm i -g pnpm
 
+# Definir o diretório de trabalho
+
+FROM base AS dependencies
+
+WORKDIR /app
+
+COPY package*.json pnpm-lock.yaml ./
+
+RUN pnpm install
+
+FROM base AS build
+
+WORKDIR /app
+
+# Copiar o restante do código da aplicação
 COPY . .
+COPY --from=dependencies /app/node_modules ./node_modules
 
-RUN yarn run build
-RUN yarn workspaces focus --production && yarn cache clean
+# Compilar o TypeScript para JavaScript
+RUN pnpm run build
 
-FROM node:18-alpine3.19
+# Etapa 2: Configuração de produção
+FROM node:18-alpine AS production
 
-WORKDIR /usr/src/app
+# Definir o diretório de trabalho
+WORKDIR /app
 
-COPY --from=build /usr/src/app/package.json ./package.json
-COPY --from=build /usr/src/app/dist ./dist
-COPY --from=build /usr/src/app/node_modules ./node_modules
+RUN npm i -g pnpm
 
+# Copiar apenas as dependências de produção
+COPY --from=build /app/dist ./dist
+COPY --from=build /app/node_modules ./node_modules
+COPY --from=build /app/package.json ./package.json
+
+# Expor a porta da aplicação
 EXPOSE 3000
 
-CMD ["yarn", "run", "start:prod"]
+# Comando para iniciar a aplicação
+CMD ["pnpm","run", "start:prod"]
