@@ -20,9 +20,9 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: 20
-        cache: 'pnpm'
-    - run: pnpm i
-    - run: yarn run test
+        cache: 'npm'
+    - run: npm i
+    - run: npm run test
 
     - name: Build Docker Image
       run: docker build -t rocketseat-ci-api:latest .
