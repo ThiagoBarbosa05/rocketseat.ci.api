@@ -7,6 +7,8 @@ COPY .yarn ./.yarn
 
 COPY . .
 
+RUN npm i -g yarn
+
 RUN yarn run build
 RUN yarn workspaces focus --production && yarn cache clean
 
