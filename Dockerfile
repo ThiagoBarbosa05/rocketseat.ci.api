@@ -1,13 +1,13 @@
 FROM node:18 AS build
 
+RUN npm i -g yarn
+
 WORKDIR /usr/src/app
 
 COPY package.json yarn.lock  ./
 COPY .yarn ./.yarn
 
 COPY . .
-
-RUN npm i -g yarn
 
 RUN yarn run build
 RUN yarn workspaces focus --production && yarn cache clean
