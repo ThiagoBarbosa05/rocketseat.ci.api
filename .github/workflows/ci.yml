@@ -40,13 +40,22 @@ jobs:
         role-to-assume: 'arn:aws:iam::686255959518:role/ecr_role'
         aws-region: "us-east-1"
     
-    - name: 'Login to AWS ECR'
+    - name: 'Login to AWS ECR' 
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v2
 
+    - name: Build Docker Image
+      env:
+        REGISTRY: ${{secrets.login-ecr.outputs.registry}}
+        TAG: ${{steps.generate_tag.outputs.sha}}
+      run: | 
+        docker build -t $REGISTRY/rocketseat-ci/rocketseat-ci:$TAG .
+        docker push $REGISTRY/rocketseat-ci/rocketseat-ci:$TAG
+
+
     # - name: Login into the container registry
     #   uses: docker/login-action@v3
-    #   with:
+    #   with: 
     #     username: ${{secrets.DOCKERHUB_USERNAME}}
     #     password: ${{secrets.DOCKERHUB_TOKEN}}
     
@@ -56,8 +65,7 @@ jobs:
     #     push: true
     #     tags: thiago0503/rocketseat-ci-api:${{steps.generate_tag.outputs.sha}}, thiago0503/rocketseat-ci-api:latest
       
-    # - name: Build Docker Image
-    #   run: docker build -t thiago0503/rocketseat-ci-api:${{steps.generate_tag.outputs.sha}} .
+   
 
     # - name: Push Image
     #   run: docker push thiago0503/rocketseat-ci-api:${{steps.generate_tag.outputs.sha}}
