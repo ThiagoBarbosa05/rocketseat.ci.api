@@ -34,7 +34,7 @@ jobs:
       uses: aws-actions/configure-aws-credentials@v4
       with:
         role-to-assume: 'arn:aws:iam::686255959518:role/ecr_role'
-        aws-region: us-east-2
+        aws-region: us-east-1
     
     - name: 'Login to AWS ECR'
       id: login-ecr
