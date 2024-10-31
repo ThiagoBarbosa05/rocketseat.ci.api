@@ -42,7 +42,7 @@ jobs:
     
     - name: 'Login to AWS ECR'
       id: login-ecr
-      uses: aws-actions/login-ecr-login@v2
+      uses: aws-actions/amazon-ecr-login@v2
 
     # - name: Login into the container registry
     #   uses: docker/login-action@v3
