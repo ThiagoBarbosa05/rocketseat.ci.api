@@ -49,8 +49,8 @@ jobs:
         REGISTRY: ${{secrets.login-ecr.outputs.registry}}
         TAG: ${{steps.generate_tag.outputs.sha}}
       run: | 
-        docker build -t $REGISTRY/rocketseat-ci/rocketseat-ci:$TAG .
-        docker push $REGISTRY/rocketseat-ci/rocketseat-ci:$TAG
+        docker build -t $REGISTRY/rocketseat-ci:$TAG .
+        docker push $REGISTRY/rocketseat-ci:$TAG
 
 
     # - name: Login into the container registry
