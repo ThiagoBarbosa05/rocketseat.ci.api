@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/ThiagoBarbosa05/rocketseat.ci.api/compare/v1.0.0...v1.0.1) (2024-11-05)
+
+
+### Bug Fixes
+
+* fix permissions ([31d5405](https://github.com/ThiagoBarbosa05/rocketseat.ci.api/commit/31d5405a94314b509ee1745014afce4d404d6afb))
+
 # 1.0.0 (2024-11-05)
 
 
